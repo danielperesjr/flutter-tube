@@ -1,4 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_tube/telas/Biblioteca.dart';
+import 'package:flutter_tube/telas/EmAlta.dart';
+import 'package:flutter_tube/telas/Inicio.dart';
+import 'package:flutter_tube/telas/Inscricoes.dart';
 
 class Home extends StatefulWidget {
   const Home({Key? key}) : super(key: key);
@@ -15,10 +19,10 @@ class _HomeState extends State<Home> {
   Widget build(BuildContext context) {
 
     List<Widget> telas = [
-      Text("Início"),
-      Text("Em alta"),
-      Text("Inscrições"),
-      Text("Biblioteca"),
+      Inicio(),
+      EmAlta(),
+      Inscricoes(),
+      Biblioteca(),
     ];
 
     return Scaffold(
