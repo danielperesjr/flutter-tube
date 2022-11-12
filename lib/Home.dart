@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_tube/CustomSearchDelegate.dart';
 import 'package:flutter_tube/telas/Biblioteca.dart';
 import 'package:flutter_tube/telas/EmAlta.dart';
 import 'package:flutter_tube/telas/Inicio.dart';
@@ -14,12 +15,13 @@ class Home extends StatefulWidget {
 class _HomeState extends State<Home> {
 
   int _indiceAtual = 0;
+  String _resultado = "";
 
   @override
   Widget build(BuildContext context) {
 
     List<Widget> telas = [
-      Inicio(),
+      Inicio(_resultado),
       EmAlta(),
       Inscricoes(),
       Biblioteca(),
@@ -39,26 +41,23 @@ class _HomeState extends State<Home> {
         ),
         actions: [
           IconButton(
-            icon: Icon(Icons.videocam),
-              onPressed: (){
-                print("Ação: videocam");
-              },
-          ),
-          IconButton(
             icon: Icon(Icons.search),
-            onPressed: (){
-              print("Ação: search");
+            onPressed: () async {
+              String? res = await
+              showSearch(
+                  context: context,
+                  delegate: CustomSearchDelegate());
+              setState(() {
+                _resultado = res!;
+              });
             },
           ),
-          IconButton(
-            icon: Icon(Icons.account_circle),
-            onPressed: (){
-              print("Ação: conta");
-            },
-          )
         ],
       ),
-      body: telas[_indiceAtual],
+      body: Container(
+        padding: EdgeInsets.all(16),
+        child: telas[_indiceAtual],
+      ),
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: _indiceAtual,
         onTap: (index){
