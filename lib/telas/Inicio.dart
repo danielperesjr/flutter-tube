@@ -15,14 +15,13 @@ class Inicio extends StatefulWidget {
 
 class _InicioState extends State<Inicio> {
 
-  _listarVideos(String pesquisa){
+  Future<List<Video>> _listarVideos(String pesquisa){
     Api api = Api();
     return api.pesquisar(pesquisa);
   }
 
   @override
   Widget build(BuildContext context) {
-
     return FutureBuilder<List<Video>>(
       future: _listarVideos(widget.pesquisa!),
       builder: (context, snapshot){
@@ -35,9 +34,14 @@ class _InicioState extends State<Inicio> {
           case ConnectionState.active :
           case ConnectionState.done :
             if(snapshot.hasData){
+              List<Video> videos = snapshot.requireData;
+              if(videos.isEmpty){
+                return Center(
+                  child: Text("Nada encontrado :(")
+                );
+              }
               return ListView.separated(
                   itemBuilder: (context, index){
-                    List<Video> videos = snapshot.data!;
                     Video video = videos[index];
                     return GestureDetector(
                       onTap: (){
@@ -71,7 +75,7 @@ class _InicioState extends State<Inicio> {
                     height: 2,
                       color: Colors.grey,
                   ),
-                  itemCount: snapshot.data!.length
+                  itemCount: snapshot.requireData.length
               );
             }else{
               return Center(
